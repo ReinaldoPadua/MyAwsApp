@@ -78,4 +78,12 @@ public class MusicRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("new AA"));
     }
 
+    @Test
+    void whenInValidInput_thenReturns404() throws Exception {
+        mockMvc.perform(get("/musics/x")
+                        .contentType("application/json"))
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Not Found"));
+    }
+
 }

@@ -7,6 +7,9 @@ import com.reinaldompadua.myAWSapp.repositories.MusicRepository;
 import com.reinaldompadua.myAWSapp.repositories.StyleRepository;
 import com.reinaldompadua.myAWSapp.repositories.VersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,31 +28,41 @@ public class MusicRestController {
     private StyleRepository styleRepository;
 
     @GetMapping("/musics")
-    public List<Music> getMusics() {
+    public List<Music> getMusics() throws Exception {
         return musicRepository.findAll();
     }
 
     @GetMapping("/musics/{id}")
-    public Music getMusicById(@PathVariable("id") Long id) {
+    public Music getMusicById(@PathVariable("id") Long id) throws Exception {
         return musicRepository.findById(id);
     }
 
     @PostMapping("/musics")
-    public void createMusic(@RequestBody Music music,@RequestParam Long styleId){
+    public void createMusic(@RequestBody Music music,@RequestParam Long styleId) throws Exception{
         music.setStyle(styleRepository.findById(styleId));
         musicRepository.save(music);
     }
 
 
     @PostMapping("/musics/{id}/versions")
-    public void getMusicVersionById(@PathVariable("id") Long id,@RequestBody Version version) {
+    public void getMusicVersionById(@PathVariable("id") Long id,@RequestBody Version version) throws Exception {
         version.setMusic(musicRepository.findById(id));
         versionRepository.save(version);
     }
 
     @GetMapping("/styles")
-    public Iterable<Style> getStyles() {
+    public Iterable<Style> getStyles() throws Exception {
         return styleRepository.findAll();
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleNoRecordFoundException(Exception ex)
+    {
+        //TO DO: logar ex
+        ErrorResponse errorResponse = new ErrorResponseException(HttpStatus.NOT_FOUND);
+        return errorResponse;
     }
 
 }

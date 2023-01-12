@@ -14,6 +14,7 @@ WORKDIR /app
 
 COPY . /app
 
+RUN gradle test
 RUN gradle build
 
 ENTRYPOINT ["java","-jar","build/libs/myAWSapp-0.0.1-SNAPSHOT.war"]

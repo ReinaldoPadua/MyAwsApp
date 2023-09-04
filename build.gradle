@@ -57,6 +57,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus
 	implementation 'io.micrometer:micrometer-registry-prometheus:1.10.3'
 
+	// https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf
+	implementation group: 'org.thymeleaf', name: 'thymeleaf', version: '2.0.5'
+
 
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'

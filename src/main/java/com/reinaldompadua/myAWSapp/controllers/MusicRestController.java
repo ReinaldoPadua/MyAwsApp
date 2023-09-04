@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/musics/")
 public class MusicRestController {
 
     @Autowired
@@ -27,24 +28,24 @@ public class MusicRestController {
     @Autowired
     private StyleRepository styleRepository;
 
-    @GetMapping("/musics")
+    @GetMapping
     public List<Music> getMusics() throws Exception {
         return musicRepository.findAll();
     }
 
-    @GetMapping("/musics/{id}")
+    @GetMapping("{id}")
     public Music getMusicById(@PathVariable("id") Long id) throws Exception {
         return musicRepository.findById(id);
     }
 
-    @PostMapping("/musics")
+    @PostMapping
     public void createMusic(@RequestBody Music music,@RequestParam Long styleId) throws Exception{
         music.setStyle(styleRepository.findById(styleId));
         musicRepository.save(music);
     }
 
 
-    @PostMapping("/musics/{id}/versions")
+    @PostMapping("{id}/versions")
     public void getMusicVersionById(@PathVariable("id") Long id,@RequestBody Version version) throws Exception {
         version.setMusic(musicRepository.findById(id));
         versionRepository.save(version);
